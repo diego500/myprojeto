@@ -290,14 +290,13 @@ echo '<td class="center"> '.$registro["id"].'</td>';
 
 echo '<td class="center"> '.$registro["nome"].'</td>';
 
-$registro["id"];
 echo '<td class="center">'.$registro["nascimento"].'</td>';
 
 echo ' <td class="center">';
 echo ' <span class="label-warning label label-default">Pending</span>';
 echo ' </td>';
 echo ' <td class="center">';
-echo ' <a class="btn btn-success" onclick="funcaoview(1234)" href="#">';
+echo ' <a class="btn btn-success" onclick="funcaoview('.$registro["id"].')" href="#">';
 echo ' <i class="glyphicon glyphicon-zoom-in icon-white"></i>';
 echo ' View'; 
 echo ' </a>';
@@ -323,7 +322,7 @@ echo ' </tr>';
 <script>
 function funcaoview(get) {
   
-  window.open('http://localhost/Clinica/myprojeto/viewClientes.php?id='+get+'', 'Pagina', 'STATUS=NO, TOOLBAR=NO, LOCATION=NO, DIRECTORIES=NO, RESISABLE=NO, SCROLLBARS=YES, TOP=10, LEFT=10, WIDTH=770, HEIGHT=400'); 
+  window.open('http://localhost/Clinica/myprojeto/viewClientes.php?id='+get+'', 'Pagina', 'STATUS=NO, TOOLBAR=NO, LOCATION=NO, DIRECTORIES=NO, RESISABLE=NO, SCROLLBARS=YES, TOP=10, LEFT=10, WIDTH=650, HEIGHT=400'); 
 }
 
 
