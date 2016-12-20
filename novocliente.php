@@ -1,6 +1,4 @@
-<?PHP
-include 'contagens.php';
-
+<?php
 
 session_start();
  
@@ -17,6 +15,52 @@ if ( !isset($_SESSION['crm']) and !isset($_SESSION['password']) ) {
     header('location:index.php');
 }
 ?>
+<?php
+
+if(isset($_POST['acao']) && $_POST['acao'] == "enviado"){
+
+
+
+try{
+  // Faz conexão com banco de daddos
+  $pdo = new PDO("mysql:host=localhost;dbname=clinica;","root", "");
+}catch(PDOException $e){
+  // Caso ocorra algum erro na conexão com o banco, exibe a mensagem
+  echo 'Falha ao conectar no banco de dados: '.$e->getMessage();
+  die;
+}
+// Prepara uma sentença para ser executada
+$statement = $pdo->prepare('INSERT INTO clientes (nome, convenio) VALUES (:nome, :convenio)');
+
+// Filtra os dados e armazena em variáveis (o filtro padrão é FILTER_SANITIZE_STRING que remove tags HTML)
+
+$nome  = $_POST['nome'];
+$convenio = $_POST['convenio'];
+
+
+// Adiciona os dados acima para serem executados na sentença
+$statement->bindParam(':nome',     $nome);
+$statement->bindParam(':convenio', $convenio);
+
+
+// Executa a sentença já com os valores
+if($statement->execute()){
+  // Definimos a mensagem de sucesso
+  echo '<script>alert("Parabens! Cliente Cadastrado com sucesso!"); </script>'; 
+  echo '<script> window.close(); </script>';
+  
+}else{
+  // Definimos a mensagem de erro
+  echo '<script>alert("0.0! Erro ao Cadastrar "); </script>'; 
+  echo '<script> window.close(); </script>';
+}
+	
+	
+	}
+
+
+?>
+
 
 
 <!DOCTYPE html>
@@ -34,8 +78,8 @@ if ( !isset($_SESSION['crm']) and !isset($_SESSION['password']) ) {
     <title>Sistema de Clinica Inteligente</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Charisma, a fully featured, responsive, HTML5, Bootstrap admin template.">
-    <!--<meta HTTP-EQUIV='refresh' CONTENT='5'>-->
     <meta name="author" content="Muhammad Usman">
+    
 
     <!-- The styles -->
     <link id="bs-css" href="css/bootstrap-cerulean.min.css" rel="stylesheet">
@@ -86,8 +130,8 @@ if ( !isset($_SESSION['crm']) and !isset($_SESSION['password']) ) {
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">
-                    <li><a href="#">Profile</a></li>
-                    <li class="divider"></li>
+                 <!--   <li><a href="#">Profile</a></li> -->
+                     <li class="divider"></li>
                     <li><a href="lagout.php">Logout</a></li>
                 </ul>
             </div>
@@ -95,7 +139,7 @@ if ( !isset($_SESSION['crm']) and !isset($_SESSION['password']) ) {
 
             <!-- theme selector starts -->
             <div class="btn-group pull-right theme-container animated tada">
-              <!--  <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                <!--<button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                     <i class="glyphicon glyphicon-tint"></i><span
                         class="hidden-sm hidden-xs"> Layout </span>
                     <span class="caret"></span>
@@ -114,13 +158,13 @@ if ( !isset($_SESSION['crm']) and !isset($_SESSION['password']) ) {
             </div>
             <!-- theme selector ends -->
 
-            <ul class="collapse navbar-collapse nav navbar-nav top-menu">
+            <!--<ul class="collapse navbar-collapse nav navbar-nav top-menu">
                 <li><a href="#"><i class="glyphicon glyphicon-globe"></i>Site</a></li>
-                <!-- <li class="dropdown">
+                <li class="dropdown">
                     <a href="#" data-toggle="dropdown"><i class="glyphicon glyphicon-cog"></i> Configurações <span
                             class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a href="configuracao.php">Geral</a></li>
+                        <li><a href="configuracao.php">Geral</a></li> -->
                       <!-- <li><a href="#">Another action</a></li>
                         <li><a href="#">Something else here</a></li>
                         <li class="divider"></li>
@@ -152,7 +196,7 @@ if ( !isset($_SESSION['crm']) and !isset($_SESSION['password']) ) {
                 </div>
                     <ul class="nav nav-pills nav-stacked main-menu">
                         <li class="nav-header">Main</li>
-                        <li><a class="ajax-link" href="inicio.html"><i class="glyphicon glyphicon-home"></i><span> Sistema </span></a>
+                        <li><a class="ajax-link" href="inicio.php"><i class="glyphicon glyphicon-home"></i><span> Sistema </span></a>
                         </li>
                         <li><a class="ajax-link" href="ui.html"><i class="glyphicon glyphicon-eye-open"></i><span> Ações </span></a>
                         </li>
@@ -168,7 +212,7 @@ if ( !isset($_SESSION['crm']) and !isset($_SESSION['password']) ) {
                     </ul>
               </div>
             </div>
-        </div>-->
+        </div> 
         <!--/span-->
         <!-- left menu ends -->
 
@@ -186,59 +230,24 @@ if ( !isset($_SESSION['crm']) and !isset($_SESSION['password']) ) {
             <div>
     <ul class="breadcrumb">
         <li>
-            <a href="#">Home</a>
+            <a href="inicio.php">Home</a>
         </li>
         <li>
-            <a href="#">Sistema</a>
+            <a href="clientes.php">Clientes</a>
+        </li>
+         <li>
+            <a href="novocliente.php">Novo Clientes</a>
         </li>
     </ul>
 </div>
-<div class=" row">
-    <div class="col-md-3 col-sm-3 col-xs-6">
-        <a data-toggle="tooltip" title="Novo Cliente." class="well top-block" href="clientes.php">
-            <i class="glyphicon glyphicon-user blue"></i>
-            <div>Total de Clientes </div>
-            <div><?php  echo $NumeroLinhas; ?></div>
-           <!-- <span class="notification">0</span> -->
-        </a>
-    </div>
 
-    <div class="col-md-3 col-sm-3 col-xs-6">
-        <a data-toggle="tooltip" title="Novo Médico" class="well top-block" href="medicos.php">
-            <i class="glyphicon  glyphicon-user blue"></i>
 
-            <div>Total de Médicos </div>
-            <div><?php echo $numeromedico;   ?></div>
-           <!-- <span class="notification green">0</span> -->
-        </a>
-    </div>
-
-    <div class="col-md-3 col-sm-3 col-xs-6">
-        <a data-toggle="tooltip" title="Classificação Brasileira de Ocupações " class="well top-block" href="cbo.php">
-            <i class="glyphicon glyphicon-user blue"></i>
-
-            <div>CBO</div>
-            <div><?php echo $numerocbo; ?></div>
-          <!--  <span class="notification yellow"></span> -->
-        </a>
-    </div>
-
-    <div class="col-md-3 col-sm-3 col-xs-6">
-        <a data-toggle="tooltip" title="30 novas mensagens ." class="well top-block" href="#">
-            <i class="glyphicon glyphicon-envelope blue"></i>
-
-            <div>Messages</div>
-            <div>30</div>
-            <span class="notification red">0</span>
-        </a>
-    </div>
-</div>
 
 <div class="row">
     <div class="box col-md-12">
         <div class="box-inner">
-            <div class="box-header well">
-                <h2><i class="glyphicon glyphicon-info-sign"></i> Bem vindos ! </h2>
+            <div class="box-header well" data-original-title="">
+                <h2><i class="glyphicon glyphicon-edit"></i>     Cadastro de Clientes </h2>
 
                 <div class="box-icon">
                     <a href="#" class="btn btn-setting btn-round btn-default"><i
@@ -249,29 +258,60 @@ if ( !isset($_SESSION['crm']) and !isset($_SESSION['password']) ) {
                             class="glyphicon glyphicon-remove"></i></a>
                 </div>
             </div>
-            <div class="box-content row">
-                <div class="col-lg-7 col-md-12">
-                    <h1>Sistema de clinicas inteligentes  <br>
-                        <small>AVIDOS IMPORTANTES PARA O ADMINISTRADOR .</small>
-                    </h1>
-                    <p>         XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                        :)</p>
+            <div class="box-content">
+     <form role="form"  action="" method="post">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Nome</label>
+                        <input type="nome" name="nome" class="form-control" id="exampleInputEmail1" placeholder="Nome Completo">
+                    </div>
+                   <div class="box-content">
+                <div class="control-group">
+                    <label class="control-label" for="selectError">Convenio</label>
+                    <div class="controls">
+                        <select id="selectError" name="convenio" data-rel="chosen">
+                    <?php
+                  $username = "root";
+                  $password="";
 
-                    <p><b>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX.</b></p>
+                  $conn = new PDO('mysql:host=localhost;dbname=clinica', $username, $password);	
+// Seleciona o Banco de dados através da conexão acima
+                 $sql = "SELECT * FROM convenios";
+                 $resultado = $conn->query($sql);
+                   while($row = $resultado->fetch()) {
+				   
+				   echo '<option name =nome value='.$row["id_convenios"].'>'.$row["nome_convenio"].'</option>';
+				   
+                            
+	           }
 
-                   
+
+				  ?>
+                   </select>
+                    </div>
+                </div>      
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+	
+                        </select>
+                    </div>
                 </div>
-                <!-- Ads, you can remove these -->
-                
-
-               
-                </div>
-                <!-- Ads end -->
+                <!--   <input type="hidden" name="acao" value="enviado"> -->
+                    <input type="hidden" name="acao" value="enviado"> 
+                    <button type="submit" value="acao" class="btn btn-default">Cadastrar</button>
+                </form>
 
             </div>
         </div>
-    </div>
-</div>
+    </div> </div>
+   
+
+  
 
 <div class="row">
   <!--/span-->
@@ -292,7 +332,7 @@ if ( !isset($_SESSION['crm']) and !isset($_SESSION['password']) ) {
     
         
             <!--End mc_embed_signup-->
-        </div>
+</div>
 
     </div>
     <!-- Ad ends -->
@@ -306,10 +346,10 @@ if ( !isset($_SESSION['crm']) and !isset($_SESSION['password']) ) {
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">×</button>
-                    <h3>Settings</h3>
+                    <h3></h3>
                 </div>
                 <div class="modal-body">
-                    <p>Here settings can be configured...</p>
+                    <p></p>
                 </div>
                 <div class="modal-footer">
                     <a href="#" class="btn btn-default" data-dismiss="modal">Close</a>
@@ -320,9 +360,6 @@ if ( !isset($_SESSION['crm']) and !isset($_SESSION['password']) ) {
     </div>
 
     <footer class="row">
-        <p class="col-md-9 col-sm-9 col-xs-12 copyright">&copy; <a href="#" target="_blank">Diego
-                Vieira</a> 2016 - 2200</p>
-
       <!--  <p class="col-md-3 col-sm-3 col-xs-12 powered-by">Powered by: <a
                 href="">Clinicas</a></p> -->
     </footer>
@@ -364,6 +401,18 @@ if ( !isset($_SESSION['crm']) and !isset($_SESSION['password']) ) {
 <!-- application script for Charisma demo -->
 <script src="js/charisma.js"></script>
 
+
+
+<script>
+
+function funcaoedita(get) {
+	
+	 window.open('http://localhost/Clinica/myprojeto/auteraclientes.php?id='+get+'', 'Pagina', 'STATUS=NO, TOOLBAR=NO, LOCATION=NO, DIRECTORIES=NO, RESISABLE=NO, SCROLLBARS=YES, TOP=10, LEFT=10, WIDTH=650, HEIGHT=400'
+  ); 
+
+	}
+
+</script>
 
 </body>
 </html>

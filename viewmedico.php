@@ -1,4 +1,3 @@
-
 <?php
  $id = $_GET['id'];
 
@@ -99,9 +98,9 @@ $conexao = mysql_select_db('clinica',$link); if($conexao){
 
 $sqlview = "SELECT clientes.convenio,clientes.id, clientes.nome, convenios.id_convenios, convenios.nome_convenio FROM clientes INNER JOIN convenios on clientes.id = $id and convenios.id_convenios= clientes.convenio";
 
-$sql = "SELECT * FROM clientes WHERE id=$id ";
+$sql = "SELECT * FROM medicos WHERE id_medico=$id ";
 
-$consulta = mysql_query($sqlview);
+$consulta = mysql_query($sql);
 
 // Armazena os dados da consulta em um array 
 
@@ -112,13 +111,16 @@ while( $registro = mysql_fetch_assoc($consulta)){
 
 echo '<div class="row">';
 echo '<div class="col-lg-7 col-md-12">';
-echo ' <h1><center> Cliente '.$registro["nome"].' </center><br>';
+echo ' <h1><center> '.$registro["nome_medico"].' </center><br>';
 echo ' </h1>';
 echo ' <p><b>Nome:</b></p>';
-echo '<p>'.$registro["nome"].'</p>';
-echo '<p><b>Convênio:</b></p>';
-echo '<p>'.$registro["nome_convenio"].'</p>';
-
+echo '<p>'.$registro["nome_medico"].'</p>';
+echo '<p><b>CRM:</b></p>';
+echo '<p>'.$registro["crm_medico"].'</p>';
+echo '<p><b>UF:</b></p>';
+echo '<p>'.$registro["uf_crm_medico"].'';
+echo '<p><b>Conselho:</b></p>';
+echo '<p>'.$registro["conselho_medico"].'</p>';
 echo ' </div>';
 
 }

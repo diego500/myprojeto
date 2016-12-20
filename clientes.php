@@ -2,6 +2,7 @@
 session_start();
  
 include 'contagens.php'; 
+
 //Caso o usuário não esteja autenticado, limpa os dados e redireciona
 if ( !isset($_SESSION['crm']) and !isset($_SESSION['password']) ) {
     //Destrói
@@ -34,6 +35,7 @@ if ( !isset($_SESSION['crm']) and !isset($_SESSION['password']) ) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Charisma, a fully featured, responsive, HTML5, Bootstrap admin template.">
     <meta name="author" content="Muhammad Usman">
+    
 
     <!-- The styles -->
     <link id="bs-css" href="css/bootstrap-cerulean.min.css" rel="stylesheet">
@@ -84,8 +86,8 @@ if ( !isset($_SESSION['crm']) and !isset($_SESSION['password']) ) {
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">
-                    <li><a href="#">Profile</a></li>
-                    <li class="divider"></li>
+                 <!--   <li><a href="#">Profile</a></li> -->
+                     <li class="divider"></li>
                     <li><a href="lagout.php">Logout</a></li>
                 </ul>
             </div>
@@ -93,11 +95,11 @@ if ( !isset($_SESSION['crm']) and !isset($_SESSION['password']) ) {
 
             <!-- theme selector starts -->
             <div class="btn-group pull-right theme-container animated tada">
-                <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                <!--<button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                     <i class="glyphicon glyphicon-tint"></i><span
                         class="hidden-sm hidden-xs"> Layout </span>
                     <span class="caret"></span>
-                </button>
+                </button> -->
                 <ul class="dropdown-menu" id="themes">
                     <li><a data-value="classic" href="#"><i class="whitespace"></i> Classic</a></li>
                     <li><a data-value="cerulean" href="#"><i class="whitespace"></i> Cerulean</a></li>
@@ -112,13 +114,13 @@ if ( !isset($_SESSION['crm']) and !isset($_SESSION['password']) ) {
             </div>
             <!-- theme selector ends -->
 
-            <ul class="collapse navbar-collapse nav navbar-nav top-menu">
+            <!--<ul class="collapse navbar-collapse nav navbar-nav top-menu">
                 <li><a href="#"><i class="glyphicon glyphicon-globe"></i>Site</a></li>
                 <li class="dropdown">
                     <a href="#" data-toggle="dropdown"><i class="glyphicon glyphicon-cog"></i> Configurações <span
                             class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a href="configuracao.php">Geral</a></li>
+                        <li><a href="configuracao.php">Geral</a></li> -->
                       <!-- <li><a href="#">Another action</a></li>
                         <li><a href="#">Something else here</a></li>
                         <li class="divider"></li>
@@ -127,12 +129,12 @@ if ( !isset($_SESSION['crm']) and !isset($_SESSION['password']) ) {
                         <li><a href="#">One more separated link</a></li> -->
                     </ul> 
                 </li>
-                <li>
+               <!-- <li>
                     <form class="navbar-search pull-left">
                         <input placeholder="Search" class="search-query form-control col-md-10" name="query"
                                type="text">
                     </form>
-                </li>
+                </li> -->
             </ul>
 
         </div>
@@ -142,7 +144,7 @@ if ( !isset($_SESSION['crm']) and !isset($_SESSION['password']) ) {
   <div class="row">
         
         <!-- left menu starts -->
-        <div class="col-sm-2 col-lg-2">
+       <!-- <div class="col-sm-2 col-lg-2">
             <div class="sidebar-nav">
               <div class="nav-canvas">
                 <div class="nav-sm nav nav-stacked">
@@ -166,7 +168,7 @@ if ( !isset($_SESSION['crm']) and !isset($_SESSION['password']) ) {
                     </ul>
               </div>
             </div>
-        </div>
+        </div> 
         <!--/span-->
         <!-- left menu ends -->
 
@@ -198,27 +200,27 @@ if ( !isset($_SESSION['crm']) and !isset($_SESSION['password']) ) {
 
             <div>Total de Clientes </div>
             <div><?php echo $NumeroLinhas;  ?></div>
-            <span class="notification">0</span>
+           <!-- <span class="notification"></span>-->
         </a>
     </div>
 
     <div class="col-md-3 col-sm-3 col-xs-6">
-        <a data-toggle="tooltip" title="Novo Médico" class="well top-block" href="#">
-            <i class="glyphicon  glyphicon-star blue"></i>
+        <a data-toggle="tooltip" title="Novo Médico" class="well top-block" href="medicos.php">
+            <i class="glyphicon  glyphicon-user blue"></i>
 
             <div>Total de Médicos </div>
-            <div>228</div>
-            <span class="notification green">0</span>
+            <div><?php echo $numeromedico; ?></div>
+           <!-- <span class="notification green">0</span> -->
         </a>
     </div>
 
     <div class="col-md-3 col-sm-3 col-xs-6">
         <a data-toggle="tooltip" title="Verificação de Finanças" class="well top-block" href="#">
-            <i class="glyphicon glyphicon-shopping-cart blue"></i>
+            <i class="glyphicon glyphicon-user blue"></i>
 
-            <div>Finanças</div>
-            <div>R$ 40000</div>
-            <span class="notification yellow">$0</span>
+            <div>CBO</div>
+            <div><?php echo $numerocbo; ?></div>
+           <!-- <span class="notification yellow">$0</span> -->
         </a>
     </div>
 
@@ -228,7 +230,7 @@ if ( !isset($_SESSION['crm']) and !isset($_SESSION['password']) ) {
 
             <div>Messages</div>
             <div>30</div>
-            <span class="notification red">0</span>
+            <span class="notification blue">0</span>
         </a>
     </div>
 </div>
@@ -247,13 +249,16 @@ if ( !isset($_SESSION['crm']) and !isset($_SESSION['password']) ) {
         </div>
     </div>
     <div class="box-content">
-    <div class="alert alert-info">Lista de clientes <a href="" target="_blank"></a></div>
+    <div class="alert alert-info"> <a class="btn btn-danger" onClick="funcaonova()" href="#">
+ <i class="glyphicon glyphicon-edit icon-white"></i>
+ Novo Cliente
+</a> <a href="" target="_blank"></a></div>
     <table class="table table-striped table-bordered bootstrap-datatable datatable responsive">
     <thead>
     <tr>
         <th>ID</th>
         <th>Nome</th>
-        <th>Nascimento</th>
+        <th>Convênio</th>
         <th>Status</th>
         <th>Configurações</th>
     </tr>
@@ -268,15 +273,21 @@ if ( !isset($_SESSION['crm']) and !isset($_SESSION['password']) ) {
 <?php
 // Conexão ao banco
 
-$link = mysql_connect('localhost','root','');
+include ('classe/conexao.php');
+
+$conectar = new conexao(); 
+$conectar -> conectar();
+
 
 // Seleciona o Banco de dados através da conexão acima
 
-$conexao = mysql_select_db('clinica',$link); if($conexao){
 
-$sql = "SELECT * FROM clientes";
 
-$consulta = mysql_query($sql);
+if($conectar){
+
+$sqlconvenios ="SELECT clientes.convenio, clientes.id, clientes.nome, convenios.id_convenios, convenios.nome_convenio FROM clientes INNER JOIN convenios on clientes.convenio = convenios.id_convenios";
+
+$consulta = mysql_query($sqlconvenios);
 
 // Armazena os dados da consulta em um array 
 
@@ -290,21 +301,21 @@ echo '<td class="center"> '.$registro["id"].'</td>';
 
 echo '<td class="center"> '.$registro["nome"].'</td>';
 
-echo '<td class="center">'.$registro["nascimento"].'</td>';
+echo '<td class="center">'.$registro["nome_convenio"].'</td>';
 
 echo ' <td class="center">';
 echo ' <span class="label-warning label label-default">Pending</span>';
 echo ' </td>';
 echo ' <td class="center">';
-echo ' <a class="btn btn-success" onclick="funcaoview('.$registro["id"].')" href="#">';
+echo ' <a class="btn btn-info" onclick="funcaoview('.$registro["id"].')" href="#">';
 echo ' <i class="glyphicon glyphicon-zoom-in icon-white"></i>';
 echo ' View'; 
-echo ' </a>';
-echo ' <a class="btn btn-info" href="#">';
+echo ' </a>'; 
+echo ' <a class="btn btn-info" onclick="funcaoedita('.$registro["id"].')" href="#">';
 echo ' <i class="glyphicon glyphicon-edit icon-white"></i>';
 echo ' Edit'; 
 echo ' </a>';
-echo ' <a class="btn btn-danger" href="#">';
+echo ' <a class="btn btn-info" onclick="funcaodeleta('.$registro["id"].')" href="#">';
 echo ' <i class="glyphicon glyphicon-trash icon-white"></i>';
 echo ' Delete';
 echo ' </a>';
@@ -322,10 +333,29 @@ echo ' </tr>';
 <script>
 function funcaoview(get) {
   
-  window.open('http://localhost/Clinica/myprojeto/viewClientes.php?id='+get+'', 'Pagina', 'STATUS=NO, TOOLBAR=NO, LOCATION=NO, DIRECTORIES=NO, RESISABLE=NO, SCROLLBARS=YES, TOP=10, LEFT=10, WIDTH=650, HEIGHT=400'); 
+  window.open('http://localhost/Clinica/myprojeto/viewClientes.php?id='+get+'', 'Pagina', 'STATUS=NO, TOOLBAR=NO, LOCATION=NO, DIRECTORIES=NO, RESISABLE=NO, SCROLLBARS=YES, TOP=10, LEFT=10, WIDTH=650, HEIGHT=400'
+  ); 
 }
 
+function funcaoedita(get) {
+	
+	 window.open('http://localhost/Clinica/myprojeto/editaclientes.php?id='+get+'', 'Pagina', 'STATUS=NO, TOOLBAR=NO, LOCATION=NO, DIRECTORIES=NO, RESISABLE=NO, SCROLLBARS=YES, TOP=10, LEFT=10, WIDTH=650, HEIGHT=400'
+  ); 
 
+	}
+
+function funcaodeleta(get) {
+	
+	 window.open('http://localhost/Clinica/myprojeto/DELETACLIENTE.php?id='+get+'', 'Pagina', 'STATUS=NO, TOOLBAR=NO, LOCATION=NO, DIRECTORIES=NO, RESISABLE=NO, SCROLLBARS=YES, TOP=10, LEFT=10, WIDTH=650, HEIGHT=400'
+  ); 
+
+	}
+	
+	function funcaonova() {
+	
+	 window.location.assign("http://localhost/Clinica/myprojeto/novocliente.php");
+	
+	}
 </script>
 
    
@@ -450,6 +480,9 @@ function funcaoview(get) {
 <script src="js/jquery.history.js"></script>
 <!-- application script for Charisma demo -->
 <script src="js/charisma.js"></script>
+
+
+
 
 
 </body>

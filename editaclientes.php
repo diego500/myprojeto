@@ -1,5 +1,5 @@
-
 <?php
+ 
  $id = $_GET['id'];
 
 session_start();
@@ -17,7 +17,46 @@ if ( !isset($_SESSION['crm']) and !isset($_SESSION['password']) ) {
     header('location:index.php');
 }
 ?>
+<?php 
+if(isset($_POST['acao']) && $_POST['acao'] == "enviado"){ 
 
+
+  // Faz conexão com banco de daddos
+
+
+
+$link = mysql_connect('localhost','root','');
+
+// Seleciona o Banco de dados através da conexão acima
+
+$conexao = mysql_select_db('clinica',$link); 
+
+if($conexao){
+
+
+
+$nome  = $_POST['nome'];
+$convenio = $_POST['convenio'];
+
+$query = "UPDATE clientes SET nome = '".$nome."', convenio = '".$convenio."' WHERE (id = ".$id.")";
+
+$atualiza = mysql_query($query);
+
+if($atualiza){ 
+  echo '<script>alert("Parabens! Dados auterados com sucesso!"); </script>'; 
+  echo '<script> window.close(); </script>';
+}else {
+ echo '<script>alert("0.0! Erro ao auterar o cliente "). mysql_error(); </script>'; 
+  echo '<script> window.close(); </script>';	
+	
+}
+
+}
+
+}
+
+ 
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -87,6 +126,10 @@ if ( !isset($_SESSION['crm']) and !isset($_SESSION['password']) ) {
             <div>
     
 </div>
+
+
+<form action="" method="post">
+
 <div class=" row"></div>
 <?php
 $link = mysql_connect('localhost','root','');
@@ -94,16 +137,13 @@ $link = mysql_connect('localhost','root','');
 // Seleciona o Banco de dados através da conexão acima
 
 $conexao = mysql_select_db('clinica',$link); if($conexao){
-
-
-
-$sqlview = "SELECT clientes.convenio,clientes.id, clientes.nome, convenios.id_convenios, convenios.nome_convenio FROM clientes INNER JOIN convenios on clientes.id = $id and convenios.id_convenios= clientes.convenio";
+$sqledita= "SELECT clientes.convenio,clientes.id, clientes.nome, convenios.id_convenios, convenios.nome_convenio FROM clientes INNER JOIN convenios on clientes.id = $id and convenios.id_convenios= clientes.convenio";
 
 $sql = "SELECT * FROM clientes WHERE id=$id ";
 
-$consulta = mysql_query($sqlview);
+$consulta = mysql_query($sqledita);
 
-// Armazena os dados da consulta em um array 
+// pesquisa o bd ára colocar os valores nos inputs 
 
 
 
@@ -112,32 +152,60 @@ while( $registro = mysql_fetch_assoc($consulta)){
 
 echo '<div class="row">';
 echo '<div class="col-lg-7 col-md-12">';
-echo ' <h1><center> Cliente '.$registro["nome"].' </center><br>';
+echo ' <h1><center>'.$registro["nome"].' </center><br>';
 echo ' </h1>';
-echo ' <p><b>Nome:</b></p>';
-echo '<p>'.$registro["nome"].'</p>';
-echo '<p><b>Convênio:</b></p>';
-echo '<p>'.$registro["nome_convenio"].'</p>';
 
-echo ' </div>';
+echo '<p><div class="form-group has-success col-md-4"></p>';
+echo '<p><b>Codigo:</b></p>';
+echo '<input type="text"  class="form-control" name="id"  value="'.$registro["id"].'" id="inputSuccess1">
+';
+echo '</div>';
+
+
+echo '<p><div class="form-group has-success col-md-4"></p>';
+echo '<p><b>Nome:</b></p>';
+echo '<input type="text"  class="form-control" name="nome"  value="'.$registro["nome"].'" id="inputSuccess1">
+';
+echo '</div>';
+echo '<p><div class="form-group has-success col-md-4"></p>';
+
+//echo '<button type="submit" onclick="funcaoedita('.$registro["id"].')" class="btn btn-default">Editar</button>';
 
 }
 }
+  echo '<div class="box-content">';
+    echo' <div class="control-group">';
+    echo '<label class="control-label" for="selectError">Convenio</label>';
+    echo '<div class="controls">';
+	echo ' <select id="selectError" name="convenio" data-rel="chosen">';
+            
+          $username = "root";
+          $password="";
 
-?>
+          $conn = new PDO('mysql:host=localhost;dbname=clinica', $username, $password);	
+// Seleciona o Banco de dados através da conexão acima
+          $sql = "SELECT * FROM convenios";
+          $resultado = $conn->query($sql);
+          while($row = $resultado->fetch()) {
+				   
+		echo '<option value='.$row["id_convenios"].'>'.$row["nome_convenio"].'</option>';
+				   
+                            
+	           }
 
-    
-                   
-                      
-                   
-                   
 
-                    
-                    
+				  ?>
+                   </select>
+                    </div>
+                </div> 
 
-                    
-                   
-               
+
+</div>
+ </div>
+ <input type="hidden" name="acao" value="enviado">
+ <button type="submit" value="acao" class="btn btn-default">Editar</button>
+</form>               
+             
     </div>
 </div>
 
@@ -229,6 +297,18 @@ echo ' </div>';
 <!-- application script for Charisma demo -->
 <script src="js/charisma.js"></script>
 
+
+
+<script>
+
+function funcaoedita(get) {
+	
+	 window.open('http://localhost/Clinica/myprojeto/auteraclientes.php?id='+get+'', 'Pagina', 'STATUS=NO, TOOLBAR=NO, LOCATION=NO, DIRECTORIES=NO, RESISABLE=NO, SCROLLBARS=YES, TOP=10, LEFT=10, WIDTH=650, HEIGHT=400'
+  ); 
+
+	}
+
+</script>
 
 </body>
 </html>
